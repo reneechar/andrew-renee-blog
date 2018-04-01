@@ -1,6 +1,6 @@
 class PostsController < ApplicationController
   before_action :find_post, only: [:edit, :update, :show, :delete]
-
+  before_action :set_all_posts
   # Index action to render all posts
   def index
     @posts = Post.all
@@ -25,10 +25,14 @@ class PostsController < ApplicationController
 
   # Edit action retrives the post and renders the edit page
   def edit
+    if params[:id]
+      @post_id = params[:id].to_i
+    end
   end
 
   # Update action updates the post with the new information
   def update
+    debugger
     if @post.update_attributes(post_params)
       flash[:notice] = "Successfully updated post!"
       redirect_to post_path(@posts)
@@ -60,5 +64,9 @@ class PostsController < ApplicationController
 
   def find_post
     @post = Post.find(params[:id])
+  end
+
+  def set_all_posts
+    @posts = Post.all
   end
 end
